@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do List</title>
+
+    <link rel="manifest" href="todo.webmanifest">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="textEditor.css">
+
+    <link rel="stylesheet" href="styles.css">
+
+
+    <meta name="application-name" content="To Do List">
+    <meta name="application-title" content="To Do List">
+    <meta property="og:site_name" content="To Do List">
+    <meta property="og:title" content="To Do List">
+    <meta name="apple-mobile-web-app-title" content="To Do List">
+    <meta property="twitter:title" content="To Do List"/>
+    <meta name="msapplication-tooltip" content="To Do List" />
+
+    <meta name="keywords" content="to do list, task list, todo app, tasklist">
+
+    <link rel="canonical" href="https://jeffreymaniac.github.io/ToDoListApp" />
+    <meta property="og:url" content="https://jeffreymaniac.github.io/ToDoListApp">
+    <meta name="application-url" content="https://jeffreymaniac.github.io/ToDoListApp">
+    <meta property="og:type" content="website">
+
+    <meta property="og:locale" content="en_US" />
+    <meta name="robots" content="nocache,noarchive,nofollow,noimageindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="author" content="JaecadeJnight">
+    <meta name="creator" content="JaecadeJnight">
+    <meta name="designer" content="JaecadeJnight">
+    <meta content="light dark" name="color-scheme">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="theme-color" content="#830A28" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#FF6E92" media="(prefers-color-scheme: light)">
+    <script src="https://www.cssscript.com/demo/right-context-menu-ctxmenu/ctxmenu.js"></script>
+
+</head>
+<body>
+
+  <div class="float-end mt-2 me-2 hideOnPrint btn-group" role="group" aria-label="Basic example">
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Settings" ><i class="bi bi-gear-fill "></i></button>
+  </div>
+  
+  <header class="header">
+      <h2 id="heading" class="heading">Personal To Do List</h2>
+      <div class="input-group mx-auto tdlAddNewItem hideOnPrint">
+          <!--<input type="text" id="myInput" placeholder="Type your item here" class="form-control">-->
+          <div id="editorContainer"></div>
+          <button id="addBtn" onclick="addItem()" class="btn btn-dark fw-bold" style="text-shadow: 0 0 5px teal">Add Item</button>
+      </div>
+  </header>
+  
+  <section class="hideOnPrint">
+      <p id="errmsg"></p>
+  </section>
+  
+  <main class="mb-4">
+     <ul id="tdlMyList" class="list-group mx-auto">
+
+     </ul>
+  </main>
+  
+  <!-- edit item modal -->
+  <div class="modal fade" id="editModal" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title text-success fs-5" id="editModalLabel">Edit List Item</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <textarea class="form-control tdlEditTextarea" id="message-text"></textarea>
+              </div>
+              <button type="button" id="saveBtn" class="btn btn-outline-success float-end" data-bs-dismiss="modal">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <!-- settings modal -->
+  <div class="modal fade" id="settingsModal" aria-hidden="true" aria-labelledby="settingsModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-4 fw-bold" id="settingsModalLabel">Settings</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Click the Export Data button to backup your data to an external file. If you already have a backup data file, click the Import Data button to restore your saved list.
+        </div>
+        <div class="modal-footer mb-4">
+            <div class="container-fluid text-center">
+              <button class="btn btn-lg btn-success mb-2" data-bs-target="#exportDataModal" data-bs-toggle="modal">
+                <i class="bi bi-box-arrow-in-left"></i> Export List Data
+              </button>
+              <button class="btn btn-lg btn-primary mb-2" data-bs-target="#importDataModal" data-bs-toggle="modal">
+                <i class="bi bi-box-arrow-in-right"></i> Import List Data
+              </button>
+            </div>  
+        </div>
+        <div class="modal-body">
+          Danger zone:
+        </div>
+        <div class="modal-footer mb-4">
+          <div class="container-fluid text-center">
+            <button class="btn btn-lg btn-danger mb-2" data-bs-target="#deleteAllDataModal" data-bs-toggle="modal">
+              <i class="bi bi-backspace"></i> Delete all list items and saved info
+            </button>
+            <!--
+            <button class="btn btn-lg btn-warning mb-2" onclick="">
+              <i class="bi bi-hypnotize"></i> Enable experimental theme
+            </button>
+          -->
+          </div>  
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- export data modal -->
+  <div class="modal fade" id="exportDataModal" aria-hidden="true" aria-labelledby="exportDataLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-success fs-5" id="exportDataLabel">Export List Data</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid text-center mb-4">
+            <button class="btn btn-lg btn-success mb-2" class="btn-close" data-bs-dismiss="modal" onclick="backupListData()">
+              <i class="bi bi-box-arrow-down"></i> Download List Data
+            </button>
+            <button class="btn btn-lg btn-danger mb-2" data-bs-target="#settingsModal" data-bs-toggle="modal">
+              Cancel
+            </button>
+          </div>    
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- import data modal -->
+  <div class="modal fade" id="importDataModal" aria-hidden="true" aria-labelledby="importDataLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-primary fs-5" id="importDataLabel">Import List Data</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="backupFile" class="form-label text-primary">Select an existing backup file</label>
+                <input id="backupFile" type="file" accept=".json" class="form-control border border-1 border-primary">
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="container-fluid text-center mb-4">
+                <button class="btn btn-lg btn-primary mb-2" class="btn-close" data-bs-dismiss="modal" onclick="importListData()">
+                  <i class="bi bi-box-arrow-in-right"></i> Import List Data
+                </button>
+                <button class="btn btn-lg btn-danger mb-2" data-bs-target="#settingsModal" data-bs-toggle="modal">
+                  Cancel
+                </button>
+            </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- delete all data modal -->
+   <div class="modal fade" id="deleteAllDataModal" aria-hidden="true" aria-labelledby="deleteAllDataLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-danger fs-5" id="deleteAllDataLabel">Delete all your saved data in this app</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid text-center mb-4">
+            <button class="btn btn-lg btn-success mb-2" class="btn-close" data-bs-dismiss="modal" onclick="backupListData();deleteListData()">
+              <i class="bi bi-box-arrow-down"></i> Download list data and delete
+            </button>
+            <button class="btn btn-lg btn-warning mb-2" class="btn-close" data-bs-dismiss="modal" onclick="deleteListData()">
+              <i class="bi bi-backspace"></i> Delete and don't download list data
+            </button>
+            <button class="btn btn-lg btn-danger mb-2" data-bs-target="#settingsModal" data-bs-toggle="modal">
+              Cancel
+            </button>
+          </div>    
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- success modal -->
+  <div class="modal fade" id="successModal" aria-hidden="true" aria-labelledby="successModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-success fs-5" id="successModalLabel">Operation Completed Successfully</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center text-success display-1 fw-bold" title="Success!">
+            <i class="bi bi-hand-thumbs-up"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- error modal -->
+  <div class="modal fade" id="errorModal" aria-hidden="true" aria-labelledby="errorModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title text-danger fs-5" id="errorModalLabel">There Was A Problem!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center text-danger display-1 fw-bold" title="Stop!">
+            <i class="bi bi-sign-stop"></i>
+          </div>
+          <p class="text-start text-danger mt-2">Something went wrong while processing your data. Please close this window, reload, and try again.</p>
+        </div>
+        <div class="modal-footer">
+          <div class="container-fluid text-center">
+              <button class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Close</button>
+          </div>  
+      </div>      
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+  <script src="textEditor.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize the editor
+    const editorContainer = document.getElementById('editorContainer');
+
+    const config = {
+         toolbar: ['undo','redo','bold', 'italic', 'underline', 'createLink','indent','outdent', 'insertImage','unorderedList','orderedList'],
+        // imageHandler: (img) => console.log('Image inserted:', img),
+        // videoHandler: (video) => console.log('Video inserted:', video)
+    };
+
+    const editor = HREditor.init(editorContainer, config);
+
+    // Example usage of change event
+    editor.onChange((content) => {
+        console.log('Content changed:', content);
+    });
+});
+  </script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

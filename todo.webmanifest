@@ -1,7 +1,7 @@
 {
-  "name": "To Do List",
-  "short_name": "ToDo",
-  "start_url": "/",
+  "name": "2DoListApp",
+  "short_name": "2DoList",
+  "start_url": "/2DoListApp",
   "display": "standalone",
   "description": "A Simple To-Do List App.",
   "icons": [
